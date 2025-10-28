@@ -18,7 +18,6 @@ public class KeywordGraphTest {
         List<Article> articles = ArticleLoader.loadFromCSV("m9pa_dataset_simplified.csv");
         graph = new KeywordGraph();
         graph.buildGraphFromArticles(articles);
-        System.out.println("Articles loaded: " + articles.size());
 
         // test graph not empty
         List<String> top1 = graph.topKDegree(1);
@@ -36,7 +35,7 @@ public class KeywordGraphTest {
     
     @Test
     public void testBFS() {
-        List<Article> articles = ArticleLoader.loadFromCSV("src/m9pa_dataset_simplified.csv");
+        List<Article> articles = ArticleLoader.loadFromCSV("m9pa_dataset_simplified.csv");
         graph = new KeywordGraph();
         graph.buildGraphFromArticles(articles);
 
@@ -57,7 +56,7 @@ public class KeywordGraphTest {
     
     @Test
     public void testDFS() {
-        List<Article> articles = ArticleLoader.loadFromCSV("src/m9pa_dataset_simplified.csv");
+        List<Article> articles = ArticleLoader.loadFromCSV("m9pa_dataset_simplified.csv");
         graph = new KeywordGraph();
         graph.buildGraphFromArticles(articles);
 
@@ -79,7 +78,7 @@ public class KeywordGraphTest {
     
     @Test
     public void testTopKDegree() {
-    	 List<Article> articles = ArticleLoader.loadFromCSV("src/m9pa_dataset_simplified.csv");
+    	 List<Article> articles = ArticleLoader.loadFromCSV("m9pa_dataset_simplified.csv");
     	 graph = new KeywordGraph();
     	 graph.buildGraphFromArticles(articles);
 

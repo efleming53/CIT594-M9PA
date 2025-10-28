@@ -42,20 +42,20 @@ public class KeywordGraph {
     		List<String> keywords = new ArrayList<>(); // list to hold keywords for this article
     		// loop over articles concepts
     		for (Concept concept : concepts) {
-    			keywords.add(concept.getLabel());
+    			keywords.add(concept.getLabel().toLowerCase());
     		}
     		
     		// loop over articles keywords
     		for (String keyword1 : keywords) {
-    			adjList.putIfAbsent(keyword1, new TreeSet<>()); // put keyword in graphs adjList if not already present, value is treeset to hold neighbor keywords
+    			adjList.putIfAbsent(keyword1, new LinkedHashSet<>()); // put keyword in graphs adjList if not already present, value is linkedhashset to hold neighbor keywords
     			
     			// nested loop to add edges both ways
     			for (String keyword2 : keywords) {
     				
     				// skip if same word as outer loop
     				if (!keyword2.equals(keyword1)) {
-    					adjList.putIfAbsent(keyword2, new TreeSet<>()); // put keyword if not already in adjList
-    					adjList.get(keyword1).add(keyword2); // ensures every keyword in this aritcle has every other keyword included in its set of neighbors
+    					adjList.putIfAbsent(keyword2, new LinkedHashSet<>()); // put keyword if not already in adjList
+    					adjList.get(keyword1).add(keyword2); // ensures every keyword in this article has every other keyword included in its set of neighbors
     					adjList.get(keyword2).add(keyword1);
     				}
     			}
@@ -75,8 +75,9 @@ public class KeywordGraph {
     		return new ArrayList<>();
     	}
     	
-    	Set<String> visited = new HashSet<>(); // set to hold visited nodes
+    	Set<String> visited = new LinkedHashSet<>(); // set to hold visited nodes
     	Queue<String> visiting = new LinkedList<>(); // queue to hold nodes in order they will be processed
+    	List<String> result = new ArrayList<>();
     	
     	visited.add(word); // add given word to visited set
     	visiting.add(word); // add given word to visiting queue
@@ -85,6 +86,8 @@ public class KeywordGraph {
     	while (!visiting.isEmpty()) {
     		
     		String currWord = visiting.remove(); // get next node to process from queue
+    		
+    		result.add(currWord); // add to result list
     		
     		// for each neighbor of the word currently being processed
     		for (String neighbor : adjList.get(currWord)) {
@@ -96,8 +99,8 @@ public class KeywordGraph {
     			}
     		}
     	}
-
-        return new ArrayList<>(visited); // return visited set as new ArrayList
+    	
+        return result;
     }
 
 
@@ -111,11 +114,12 @@ public class KeywordGraph {
     		return new ArrayList<>();
     	}
     	
-    	Set<String> visited = new HashSet<>(); // create set to hold visited nodes
+    	Set<String> visited = new LinkedHashSet<>(); // create set to hold visited nodes
     	
     	doDFS(word, visited); // call recursive function to do DFS
-
-        return new ArrayList<>(visited); // return set of visited nodes as new ArrayList
+    	
+    	// return sorted list of visited
+        return new ArrayList<>(visited);
     }
     
     private Set<String> doDFS(String currWord, Set<String> visited) {
@@ -126,6 +130,8 @@ public class KeywordGraph {
     	}
     	
     	visited.add(currWord); // add word to visited set
+    	
+
     	
     	// loop over words neighbors, if not in visited, recursively call this function
     	for (String neighbor : adjList.get(currWord)) {
